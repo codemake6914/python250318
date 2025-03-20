@@ -9,6 +9,9 @@ import re
 #User-Agent를 조작하는 경우(아이폰에서 사용하는 사파리 브라우져의 헤더) 
 hdr = {'User-agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/603.1.23 (KHTML, like Gecko) Version/10.0 Mobile/14E5239e Safari/602.1'}
 
+#파일에 쓰기
+f = open('c:\\work\\clien.txt', 'w', encoding='utf-8')
+
 #페이징하는 URL주소를 조립립
 for n in range(0,10):
         #클리앙의 중고장터 주소 
@@ -31,14 +34,17 @@ for n in range(0,10):
         for item in list:
                 try:
                         title = item.text.strip()
-                        print(title)
+                        # print(title)
                         #<a class='list_subject'><span>text</span><span>text</span>
                         # span = item.contents[1]
                         # span2 = span.nextSibling.nextSibling
                         # title = span2.text 
-                        # if (re.search('아이폰', title)):
-                        #         print(title.strip())
-                        #         print('https://www.clien.net'  + item['href'])
+                        if (re.search('애플워치', title)):
+                                print(title.strip())
+                                # print('https://www.clien.net'  + item['href'])
+                                f.write(title.strip() + '\n')
                 except:
                         pass
         
+#파일닫기
+f.close()
