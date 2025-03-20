@@ -13,16 +13,22 @@ hdr = {'User-agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) Appl
 f = open('c:\\work\\clien.txt', 'w', encoding='utf-8')
 
 #페이징하는 URL주소를 조립립
-for n in range(0,10):
+for n in range(0,11):
         #클리앙의 중고장터 주소 
-        data ='https://www.clien.net/service/board/sold?&od=T31&po=' + str(n)
+        data ='https://www.todayhumor.co.kr/board/list.php?table=bestofbest?page=' + str(n)
         #웹브라우져 헤더 추가 
         req = urllib.request.Request(data, \
                                     headers = hdr)
         data = urllib.request.urlopen(req).read()
         page = data.decode('utf-8', 'ignore')
         soup = BeautifulSoup(page, 'html.parser')
-        list = soup.findAll('span', attrs={'data-role':'list-title-text'})
+        list = soup.findAll('td', attrs={'class':'subject'})
+# <td class="subject">
+# <a href="/board/view.php?table=bestofbest&amp;no=479073&amp;s_no=479073&amp;page=1" target="_top">
+# 라떼 러닝크루</a><span class="list_memo_count_span"> [22]</span>  
+# <span style="margin-left:4px;">
+# <img src="http://www.todayhumor.co.kr/board/images/list_icon_photo.gif" style="vertical-align:middle; margin-bottom:1px;"> </span> </td>
+
 
 # <span class="category fixed" title="판매">판매</span>
 # <span class="subject_fixed" data-role="list-title-text" title="플레이스테이션5 (PS5) 슬림 디지털 에디션 팝니다. (택포 40만원)">
@@ -33,13 +39,13 @@ for n in range(0,10):
 
         for item in list:
                 try:
-                        title = item.text.strip()
+                        title = item.find('a').text.strip()
                         # print(title)
                         #<a class='list_subject'><span>text</span><span>text</span>
                         # span = item.contents[1]
                         # span2 = span.nextSibling.nextSibling
                         # title = span2.text 
-                        if (re.search('애플워치', title)):
+                        if (re.search('전남', title)):
                                 print(title.strip())
                                 # print('https://www.clien.net'  + item['href'])
                                 f.write(title.strip() + '\n')
